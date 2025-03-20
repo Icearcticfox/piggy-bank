@@ -185,8 +185,9 @@
   },
   "active": "bfba91379624a4f7",
   "lastOpenFiles": [
-    "README.md",
+    "docs/utilities/Chef.md",
     "docs/index.md",
+    "README.md",
     "docs/utilities/k8s/Kube.md",
     "docs/utilities/k8s/Operator SDK.md",
     "docs/utilities/Gitlab/Runners.md",
@@ -210,7 +211,6 @@
     "docs/topics/Отличие Hard Links и Symbolic Links.md",
     "docs/topics/Deploying VictoriaMetrics in Cluster Mode (by Components).md",
     "docs/utilities/psql.md",
-    "docs/utilities/Memory.md",
     "docs/utilities/Virtualization/forvardports657889.png"
   ]
 }
