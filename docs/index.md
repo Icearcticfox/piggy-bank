@@ -1,4 +1,8 @@
-# Welcome to MkDocs
+# Welcome to Piggy bank
+
+A set of useful commands and articles collected by me
+
+## Based on MKdocs
 
 For full documentation visit [mkdocs.org](https://www.mkdocs.org).
 
