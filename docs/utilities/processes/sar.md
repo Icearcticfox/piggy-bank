@@ -1,5 +1,3 @@
-### `sar`
-
 **System Activity Reporter**
 [`sar`](https://rtfm.co.ua/linux-utilita-sar-opisanie-primery/)
 

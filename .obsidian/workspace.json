@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "docs/topics/Kube cluster architecture.md",
+                "file": "docs/utilities/processes/strace.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "Kube cluster architecture"
+              "title": "strace"
             }
           }
         ]
@@ -94,7 +94,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "docs/topics/Kube cluster architecture.md",
+                "file": "docs/utilities/processes/strace.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -104,7 +104,7 @@
                 "unlinkedCollapsed": true
               },
               "icon": "links-coming-in",
-              "title": "Backlinks for Kube cluster architecture"
+              "title": "Backlinks for strace"
             }
           },
           {
@@ -113,12 +113,12 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "docs/topics/Kube cluster architecture.md",
+                "file": "docs/utilities/processes/strace.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               },
               "icon": "links-going-out",
-              "title": "Outgoing links from Kube cluster architecture"
+              "title": "Outgoing links from strace"
             }
           },
           {
@@ -142,13 +142,13 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "docs/topics/Kube cluster architecture.md",
+                "file": "docs/utilities/processes/strace.md",
                 "followCursor": false,
                 "showSearch": false,
                 "searchQuery": ""
               },
               "icon": "lucide-list",
-              "title": "Outline of Kube cluster architecture"
+              "title": "Outline of strace"
             }
           }
         ]
@@ -170,8 +170,12 @@
   },
   "active": "7f3bcfc957159866",
   "lastOpenFiles": [
-    "3.2-Ingress-Controller.md",
+    "docs/utilities/processes/ss.md",
+    "docs/utilities/processes/sar.md",
+    "docs/utilities/processes/ps.md",
+    "docs/utilities/processes/lsof.md",
     "docs/topics/Kube cluster architecture.md",
+    "3.2-Ingress-Controller.md",
     "docs/topics/Linux Namespaces and Cgroups.md",
     "Linux.md",
     "3.2.md",
@@ -192,10 +196,6 @@
     "docs/topics/ICMP.md",
     "docs/topics/Configuring a Kubernetes Cluster.md",
     "docs/topics/Difference between Hard Links and Symbolic Links.md",
-    "docs/topics/envoy.md",
-    "docs/topics/ACID and BASE.md",
-    "docs/Interview.md",
-    "docs/interview/questions/interview.md",
     "docs/interview",
     "docs/interview/questions",
     "docs/utilities/Virtualization/forvardports657889.png",

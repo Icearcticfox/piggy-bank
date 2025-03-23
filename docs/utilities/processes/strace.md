@@ -1,5 +1,3 @@
-### `strace`  
-
 **System Call Tracer**  
 [`strace`](https://losst.ru/komanda-strace-v-linux)
 

@@ -1,5 +1,3 @@
-### `lsof`  
-
 **List Open Files**  
 [`lsof` Command Reference](https://habr.com/ru/company/ruvds/blog/337934/)
 

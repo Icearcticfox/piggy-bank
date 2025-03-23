@@ -1,4 +1,3 @@
-### `ps`  
 [ps commands](https://blog.sedicomm.com/2018/05/28/30-poleznyh-komand-ps-dlya-monitoringa-protsessov-linux/)  
 
 The `ps` command in Linux is a versatile tool used for monitoring and managing processes. It provides detailed information about running processes, including process IDs (PIDs), CPU and memory usage, and much more. This command is essential for system administrators and anyone needing to manage or troubleshoot processes on a Linux system.
