@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "docs/utilities/processes/strace.md",
+                "file": "docs/topics/CAP and PACELC.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "strace"
+              "title": "CAP and PACELC"
             }
           }
         ]
@@ -94,7 +94,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "docs/utilities/processes/strace.md",
+                "file": "docs/topics/CAP and PACELC.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -104,7 +104,7 @@
                 "unlinkedCollapsed": true
               },
               "icon": "links-coming-in",
-              "title": "Backlinks for strace"
+              "title": "Backlinks for CAP and PACELC"
             }
           },
           {
@@ -113,12 +113,12 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "docs/utilities/processes/strace.md",
+                "file": "docs/topics/CAP and PACELC.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               },
               "icon": "links-going-out",
-              "title": "Outgoing links from strace"
+              "title": "Outgoing links from CAP and PACELC"
             }
           },
           {
@@ -142,13 +142,13 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "docs/utilities/processes/strace.md",
+                "file": "docs/topics/CAP and PACELC.md",
                 "followCursor": false,
                 "showSearch": false,
                 "searchQuery": ""
               },
               "icon": "lucide-list",
-              "title": "Outline of strace"
+              "title": "Outline of CAP and PACELC"
             }
           }
         ]
@@ -170,6 +170,18 @@
   },
   "active": "7f3bcfc957159866",
   "lastOpenFiles": [
+    "docs/utilities/Network.md",
+    "docs/interview/questions/network.md",
+    "docs/interview/questions/linux.md",
+    "docs/index.md",
+    "docs/interview/Interview.md",
+    "docs/utilities/consul/KV.md",
+    "docs/interview/questions/kubernetes.md",
+    "docs/interview/questions/clouds.md",
+    "docs/utilities/virtualization/VirtualBox.md",
+    "docs/utilities/virtualization/forvardports657889.png",
+    "docs/utilities/virtualization/Docker.md",
+    "docs/utilities/processes/strace.md",
     "docs/utilities/processes/ss.md",
     "docs/utilities/processes/sar.md",
     "docs/utilities/processes/ps.md",
@@ -177,10 +189,7 @@
     "docs/topics/Kube cluster architecture.md",
     "3.2-Ingress-Controller.md",
     "docs/topics/Linux Namespaces and Cgroups.md",
-    "Linux.md",
     "3.2.md",
-    "docs/interview/questions/clouds.md",
-    "docs/interview/questions/kubernetes.md",
     "docs/topics/Git merge kinds.md",
     "docs/topics/Thanos vs VictoriaMetrics.md",
     "docs/topics/Symmetrical and assimetrical decrypt.md",
@@ -188,17 +197,8 @@
     "docs/topics/Inode and Descriptors.md",
     "docs/topics/Deploying VictoriaMetrics in Cluster Mode (by Components).md",
     "docs/topics/CAP and PACELC.md",
-    "docs/topics/Ansible vs Terraform.md",
-    "docs/topics/Docker layots.md",
-    "docs/topics/du how it work?.md",
-    "docs/topics/Hard Links vs Symbolic Links.md",
-    "docs/topics/HTTPv3.md",
-    "docs/topics/ICMP.md",
-    "docs/topics/Configuring a Kubernetes Cluster.md",
-    "docs/topics/Difference between Hard Links and Symbolic Links.md",
     "docs/interview",
     "docs/interview/questions",
-    "docs/utilities/Virtualization/forvardports657889.png",
     "docs/devops/Terraform",
     "docs/devops/Clouds",
     "docs/devops/Gitlab",
