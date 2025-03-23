@@ -1,3 +1,4 @@
+(with Services, Nodes, Ingress, and DNS)
 
 In this guide, we will deploy a **Kubernetes cluster** and configure:
 
