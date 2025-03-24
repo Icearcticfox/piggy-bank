@@ -1,5 +1,5 @@
 
-# Supervisor – Managing Processes and Services
+# Managing Processes and Services
 
 **Supervisor** is a powerful tool for managing and monitoring processes and services in Unix-like operating systems. It allows you to control your services, ensuring they are always running and can be restarted if they fail.
 
