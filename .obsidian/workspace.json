@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "docs/interview/questions/linux.md",
+                "file": "docs/topics/Configuring a Kubernetes Cluster.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "linux"
+              "title": "Configuring a Kubernetes Cluster"
             }
           }
         ]
@@ -40,8 +40,7 @@
             "state": {
               "type": "file-explorer",
               "state": {
-                "sortOrder": "alphabetical",
-                "autoReveal": false
+                "sortOrder": "alphabetical"
               },
               "icon": "lucide-folder-closed",
               "title": "Files"
@@ -94,17 +93,17 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "docs/interview/questions/linux.md",
+                "file": "docs/topics/Configuring a Kubernetes Cluster.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
                 "showSearch": false,
                 "searchQuery": "",
-                "backlinkCollapsed": true,
-                "unlinkedCollapsed": true
+                "backlinkCollapsed": false,
+                "unlinkedCollapsed": false
               },
               "icon": "links-coming-in",
-              "title": "Backlinks for linux"
+              "title": "Backlinks for Configuring a Kubernetes Cluster"
             }
           },
           {
@@ -113,12 +112,12 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "docs/interview/questions/linux.md",
+                "file": "docs/topics/Configuring a Kubernetes Cluster.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               },
               "icon": "links-going-out",
-              "title": "Outgoing links from linux"
+              "title": "Outgoing links from Configuring a Kubernetes Cluster"
             }
           },
           {
@@ -142,13 +141,10 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "docs/interview/questions/linux.md",
-                "followCursor": false,
-                "showSearch": false,
-                "searchQuery": ""
+                "file": "docs/topics/Configuring a Kubernetes Cluster.md"
               },
               "icon": "lucide-list",
-              "title": "Outline of linux"
+              "title": "Outline of Configuring a Kubernetes Cluster"
             }
           }
         ],
@@ -170,40 +166,34 @@
   },
   "active": "b339270398399444",
   "lastOpenFiles": [
-<<<<<<< Updated upstream
-    "docs/devops/Clouds/Basic questions.md",
-=======
->>>>>>> Stashed changes
-    "docs/interview/Interview.md",
-    "docs/interview/questions/clouds.md",
-    "docs/interview/questions/network.md",
-    "docs/interview/questions/linux.md",
+    "docs/topics/CAP and PACELC.md",
+    "docs/topics/Configuring a Kubernetes Cluster.md",
+    "docs/topics/Sticky bit.md",
+    "docs/topics/Symmetrical and assimetrical decrypt.md",
+    "docs/topics/Deploying VictoriaMetrics in Cluster Mode (by Components).md",
+    "docs/topics/du how it work?.md",
+    "docs/topics/Git merge kinds.md",
+    "docs/topics/Docker layots.md",
+    "docs/topics/HTTPv3.md",
+    "docs/utilities/rediscli.md",
+    "docs/utilities/Network.md",
+    "docs/utilities/Iptables.md",
+    "docs/utilities/Virtualization/Docker.md",
+    "docs/utilities/Virtualization/forvardports657889.png",
+    "docs/utilities/services/Systemd service.md",
+    "docs/utilities/services/System management.md",
+    "docs/utilities/services/supervisord.md",
+    "docs/utilities/processes/lsof.md",
+    "docs/utilities/processes/ps.md",
+    "docs/utilities/processes/sar.md",
+    "docs/utilities/processes/ss.md",
+    "docs/utilities/processes/strace.md",
     "docs/interview/questions/kubernetes.md",
+    "docs/interview/Interview.md",
     "docs/devops/Terraform/Workspace.md",
     "docs/devops/Terraform/Terraform state.md",
-    "docs/devops/Kubernetes/Security.md",
-    "docs/devops/Kubernetes/Autoscailing.md",
-    "docs/devops/Gitlab/Security In CI-CD.md",
-    "docs/devops/Gitlab/Runners.md",
-    "docs/devops/Gitlab/Artifacts.md",
-<<<<<<< Updated upstream
-=======
-    "docs/devops/Clouds/Basic questions.md",
->>>>>>> Stashed changes
-    "docs/topics/Kube cluster architecture.md",
-    "docs/index.md",
-    "README.md",
-    "docs/utilities/Disk.md",
-    "docs/utilities/Git.md",
-    "docs/utilities/crontab.md",
-    "docs/utilities/pre-commit-hook.md",
-    "docs/topics/CAP and PACELC.md",
-    "docs/utilities/Network.md",
-    "docs/utilities/consul/KV.md",
-    "docs/utilities/virtualization/VirtualBox.md",
+    "docs/devops/Ansible.md",
     "docs/utilities/virtualization/forvardports657889.png",
-    "docs/utilities/virtualization/Docker.md",
-    "docs/utilities/processes/strace.md",
     "docs/interview",
     "docs/interview/questions",
     "docs/devops/Terraform",
