@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "docs/topics/Configuring a Kubernetes Cluster.md",
+                "file": "docs/utilities/processes/ps.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "Configuring a Kubernetes Cluster"
+              "title": "ps"
             }
           }
         ]
@@ -40,7 +40,8 @@
             "state": {
               "type": "file-explorer",
               "state": {
-                "sortOrder": "alphabetical"
+                "sortOrder": "alphabetical",
+                "autoReveal": false
               },
               "icon": "lucide-folder-closed",
               "title": "Files"
@@ -93,17 +94,17 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "docs/topics/Configuring a Kubernetes Cluster.md",
+                "file": "docs/utilities/processes/ps.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
                 "showSearch": false,
                 "searchQuery": "",
-                "backlinkCollapsed": false,
-                "unlinkedCollapsed": false
+                "backlinkCollapsed": true,
+                "unlinkedCollapsed": true
               },
               "icon": "links-coming-in",
-              "title": "Backlinks for Configuring a Kubernetes Cluster"
+              "title": "Backlinks for ps"
             }
           },
           {
@@ -112,12 +113,12 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "docs/topics/Configuring a Kubernetes Cluster.md",
+                "file": "docs/utilities/processes/ps.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               },
               "icon": "links-going-out",
-              "title": "Outgoing links from Configuring a Kubernetes Cluster"
+              "title": "Outgoing links from ps"
             }
           },
           {
@@ -141,10 +142,13 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "docs/topics/Configuring a Kubernetes Cluster.md"
+                "file": "docs/utilities/processes/ps.md",
+                "followCursor": false,
+                "showSearch": false,
+                "searchQuery": ""
               },
               "icon": "lucide-list",
-              "title": "Outline of Configuring a Kubernetes Cluster"
+              "title": "Outline of ps"
             }
           }
         ],
@@ -164,35 +168,35 @@
       "command-palette:Open command palette": false
     }
   },
-  "active": "b339270398399444",
+  "active": "7f3bcfc957159866",
   "lastOpenFiles": [
-    "docs/topics/CAP and PACELC.md",
-    "docs/topics/Configuring a Kubernetes Cluster.md",
-    "docs/topics/Sticky bit.md",
-    "docs/topics/Symmetrical and assimetrical decrypt.md",
-    "docs/topics/Deploying VictoriaMetrics in Cluster Mode (by Components).md",
-    "docs/topics/du how it work?.md",
-    "docs/topics/Git merge kinds.md",
-    "docs/topics/Docker layots.md",
-    "docs/topics/HTTPv3.md",
-    "docs/utilities/rediscli.md",
-    "docs/utilities/Network.md",
-    "docs/utilities/Iptables.md",
-    "docs/utilities/Virtualization/Docker.md",
-    "docs/utilities/Virtualization/forvardports657889.png",
-    "docs/utilities/services/Systemd service.md",
-    "docs/utilities/services/System management.md",
-    "docs/utilities/services/supervisord.md",
     "docs/utilities/processes/lsof.md",
     "docs/utilities/processes/ps.md",
-    "docs/utilities/processes/sar.md",
-    "docs/utilities/processes/ss.md",
-    "docs/utilities/processes/strace.md",
-    "docs/interview/questions/kubernetes.md",
+    "docs/topics/Kube cluster architecture.md",
+    "docs/devops/clouds/Basic questions.md",
+    "docs/devops/Ansible.md",
+    "docs/devops/clouds",
+    "docs/devops/Gitlab/Artifacts.md",
+    "docs/interview/questions/linux.md",
+    "docs/devops/Clouds/Basic questions.md",
     "docs/interview/Interview.md",
+    "docs/interview/questions/clouds.md",
+    "docs/interview/questions/network.md",
+    "docs/interview/questions/kubernetes.md",
     "docs/devops/Terraform/Workspace.md",
     "docs/devops/Terraform/Terraform state.md",
-    "docs/devops/Ansible.md",
+    "docs/devops/Kubernetes/Security.md",
+    "docs/devops/Kubernetes/Autoscailing.md",
+    "docs/devops/Gitlab/Security In CI-CD.md",
+    "docs/devops/Gitlab/Runners.md",
+    "docs/index.md",
+    "README.md",
+    "docs/utilities/Disk.md",
+    "docs/utilities/Git.md",
+    "docs/utilities/crontab.md",
+    "docs/utilities/pre-commit-hook.md",
+    "docs/topics/CAP and PACELC.md",
+    "docs/utilities/Network.md",
     "docs/utilities/virtualization/forvardports657889.png",
     "docs/interview",
     "docs/interview/questions",
