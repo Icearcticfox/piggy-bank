@@ -13,12 +13,20 @@
             "state": {
               "type": "markdown",
               "state": {
+<<<<<<< Updated upstream
                 "file": "docs/utilities/processes/ps.md",
+=======
+                "file": "docs/interview/questions/linux.md",
+>>>>>>> Stashed changes
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
+<<<<<<< Updated upstream
               "title": "ps"
+=======
+              "title": "linux"
+>>>>>>> Stashed changes
             }
           }
         ]
@@ -94,7 +102,11 @@
             "state": {
               "type": "backlink",
               "state": {
+<<<<<<< Updated upstream
                 "file": "docs/utilities/processes/ps.md",
+=======
+                "file": "docs/interview/questions/linux.md",
+>>>>>>> Stashed changes
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -104,7 +116,11 @@
                 "unlinkedCollapsed": true
               },
               "icon": "links-coming-in",
+<<<<<<< Updated upstream
               "title": "Backlinks for ps"
+=======
+              "title": "Backlinks for linux"
+>>>>>>> Stashed changes
             }
           },
           {
@@ -113,12 +129,20 @@
             "state": {
               "type": "outgoing-link",
               "state": {
+<<<<<<< Updated upstream
                 "file": "docs/utilities/processes/ps.md",
+=======
+                "file": "docs/interview/questions/linux.md",
+>>>>>>> Stashed changes
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               },
               "icon": "links-going-out",
+<<<<<<< Updated upstream
               "title": "Outgoing links from ps"
+=======
+              "title": "Outgoing links from linux"
+>>>>>>> Stashed changes
             }
           },
           {
@@ -142,13 +166,21 @@
             "state": {
               "type": "outline",
               "state": {
+<<<<<<< Updated upstream
                 "file": "docs/utilities/processes/ps.md",
+=======
+                "file": "docs/interview/questions/linux.md",
+>>>>>>> Stashed changes
                 "followCursor": false,
                 "showSearch": false,
                 "searchQuery": ""
               },
               "icon": "lucide-list",
+<<<<<<< Updated upstream
               "title": "Outline of ps"
+=======
+              "title": "Outline of linux"
+>>>>>>> Stashed changes
             }
           }
         ],
@@ -170,6 +202,7 @@
   },
   "active": "7f3bcfc957159866",
   "lastOpenFiles": [
+<<<<<<< Updated upstream
     "docs/utilities/processes/lsof.md",
     "docs/utilities/processes/ps.md",
     "docs/topics/Kube cluster architecture.md",
@@ -182,6 +215,12 @@
     "docs/interview/Interview.md",
     "docs/interview/questions/clouds.md",
     "docs/interview/questions/network.md",
+=======
+    "docs/interview/Interview.md",
+    "docs/interview/questions/clouds.md",
+    "docs/interview/questions/network.md",
+    "docs/interview/questions/linux.md",
+>>>>>>> Stashed changes
     "docs/interview/questions/kubernetes.md",
     "docs/devops/Terraform/Workspace.md",
     "docs/devops/Terraform/Terraform state.md",
@@ -189,6 +228,12 @@
     "docs/devops/Kubernetes/Autoscailing.md",
     "docs/devops/Gitlab/Security In CI-CD.md",
     "docs/devops/Gitlab/Runners.md",
+<<<<<<< Updated upstream
+=======
+    "docs/devops/Gitlab/Artifacts.md",
+    "docs/devops/Clouds/Basic questions.md",
+    "docs/topics/Kube cluster architecture.md",
+>>>>>>> Stashed changes
     "docs/index.md",
     "README.md",
     "docs/utilities/Disk.md",
@@ -197,7 +242,15 @@
     "docs/utilities/pre-commit-hook.md",
     "docs/topics/CAP and PACELC.md",
     "docs/utilities/Network.md",
+<<<<<<< Updated upstream
     "docs/utilities/virtualization/forvardports657889.png",
+=======
+    "docs/utilities/consul/KV.md",
+    "docs/utilities/virtualization/VirtualBox.md",
+    "docs/utilities/virtualization/forvardports657889.png",
+    "docs/utilities/virtualization/Docker.md",
+    "docs/utilities/processes/strace.md",
+>>>>>>> Stashed changes
     "docs/interview",
     "docs/interview/questions",
     "docs/devops/Terraform",
