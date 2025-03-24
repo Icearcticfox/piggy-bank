@@ -170,7 +170,10 @@
   },
   "active": "b339270398399444",
   "lastOpenFiles": [
+<<<<<<< Updated upstream
     "docs/devops/Clouds/Basic questions.md",
+=======
+>>>>>>> Stashed changes
     "docs/interview/Interview.md",
     "docs/interview/questions/clouds.md",
     "docs/interview/questions/network.md",
@@ -183,6 +186,10 @@
     "docs/devops/Gitlab/Security In CI-CD.md",
     "docs/devops/Gitlab/Runners.md",
     "docs/devops/Gitlab/Artifacts.md",
+<<<<<<< Updated upstream
+=======
+    "docs/devops/Clouds/Basic questions.md",
+>>>>>>> Stashed changes
     "docs/topics/Kube cluster architecture.md",
     "docs/index.md",
     "README.md",
