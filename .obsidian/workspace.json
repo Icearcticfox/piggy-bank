@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "docs/topics/ACID and BASE.md",
+                "file": "docs/interview/Interview.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "ACID and BASE"
+              "title": "Interview"
             }
           }
         ]
@@ -142,13 +142,13 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "docs/topics/ACID and BASE.md",
+                "file": "docs/interview/Interview.md",
                 "followCursor": false,
                 "showSearch": false,
                 "searchQuery": ""
               },
               "icon": "lucide-list",
-              "title": "Outline of ACID and BASE"
+              "title": "Outline of Interview"
             }
           }
         ],
@@ -170,6 +170,7 @@
   },
   "active": "7f3bcfc957159866",
   "lastOpenFiles": [
+    "docs/topics/ACID and BASE.md",
     "docs/programming/Common.md",
     "docs/interview/Interview.md",
     "docs/topics/Kube cluster architecture.md",
@@ -195,7 +196,6 @@
     "docs/interview/Troubleshooting Guide.md",
     "docs/interview/questions/Terraform.md",
     "docs/devops/Ansible.md",
-    "docs/interview/questions/gitlab.md",
     "docs/devops/clouds",
     "docs/utilities/virtualization/forvardports657889.png",
     "docs/interview",
