@@ -1,9 +1,7 @@
 Preparing to Interview
 
 Resources:
-
 1. https://github.com/Swfuse/devops-interview?tab=readme-ov-file
-
 2. https://github.com/rmntrvn/adm_linux_ops_questions
 
 ---
@@ -92,7 +90,6 @@ LoadAverage — средняя загрузка CPU за 1, 5 и 15 минут.
 Команда: `chown`
 
 - **Требуется:** либо быть владельцем файла, либо иметь права root.
-
 
 #### Пример:
 
@@ -590,3 +587,1257 @@ worker_connections 1024;
 | Основная задача        | Доступ к внешним ресурсам  | Защита и маршрутизация к внутренним ресурсам |
 | Пример                 | Squid                      | Nginx, HAProxy, Envoy       |
 
+## Вопросы к SRE-собеседованию
+
+### 1. Как работает контейнеризация и чем отличается от виртуализации?
+
+**Контейнеризация:** изоляция приложений с использованием общего ядра ОС (через `namespaces`, `cgroups`). Контейнер — это изолированный процесс, а не отдельная ОС.
+
+**Виртуализация:** запуск полноценной ОС поверх гипервизора. Каждая виртуальная машина имеет собственное ядро и ресурсы.
+
+**Контейнеры легче, запускаются быстрее, используют меньше ресурсов.**
+
+---
+
+### 2. В чем смысл `limits` и `requests` в Kubernetes?
+
+- `requests` — сколько ресурсов (CPU/Memory) **гарантировано** выделяется под pod.
+- `limits` — максимально допустимое потребление pod’ом.
+
+**Пример:**
+```yaml
+resources:
+  requests:
+    cpu: "250m"
+    memory: "256Mi"
+  limits:
+    cpu: "500m"
+    memory: "512Mi"
+```
+
+Kubernetes использует requests при планировании. Если pod превысит limit по CPU — его затормозят, по memory — убьют (OOMKill).
+
+---
+
+### 3. Что такое Load Average?
+
+Load Average — средняя нагрузка на CPU за последние 1, 5, 15 минут.
+
+- Значение 1.0 означает, что один процесс полностью загружает одно ядро.
+- Если LA > кол-ва ядер — есть очередь ожидания.
+
+Можно посмотреть: `uptime`, `top`, `cat /proc/loadavg`
+
+---
+
+### 4. Что такое zombie процесс и чем это плохо, как его убить?
+
+**Zombie (зомби)** — завершившийся процесс, чья запись ещё хранится в системе (ожидает, пока родитель вызовет `wait()` для чтения exit-кода).
+
+- Не использует CPU/RAM, но потребляет **PID**.
+- При большом числе зомби — может закончиться пул PID.
+
+**Убить:** нельзя напрямую, нужно убить родителя:
+```bash
+ps -ef | grep defunct
+# найти родителя, затем:
+sudo kill -9 <PID>
+```
+
+---
+
+### 5. Чем опасно хранение большого количества маленьких файлов на файловой системе?
+
+- **Заканчиваются inodes** — метаданные для файлов.
+- Медленное выполнение операций (поиск, open/read).
+- Проблемы с резервным копированием и производительностью.
+
+**Что делать:**
+- Использовать базы данных (например, SQLite, PostgreSQL).
+- Разбивать по подпапкам (sharding по префиксу ID).
+- Использовать объектное хранилище (S3, GCS).
+
+---
+
+### 6. Чем отличается TCP от UDP?
+
+|               | TCP                             | UDP                        |
+|---------------|----------------------------------|-----------------------------|
+| Соединение    | Установление (3-way handshake)  | Без соединения             |
+| Надёжность    | Гарантия доставки, порядок       | Нет гарантий               |
+| Контроль потока | Есть                           | Нет                        |
+| Пример        | HTTP, SSH, SMTP                  | DNS, VoIP, стриминг        |
+
+TCP — надёжно, но медленнее. UDP — быстро, но без гарантий доставки.
+
+## Kubernetes
+
+### Architecture
+Kubernetes-кластер состоит из **Control Plane** (плоскости управления) и **Worker Nodes** (узлов-исполнителей). Эти компоненты работают вместе для управления развертыванием контейнеров, балансировки нагрузки, автоматического масштабирования и самовосстановления системы.
+
+- **Control Plane** управляет кластером.
+- **Worker Nodes** выполняют контейнеры.
+- **API Server** — основное звено взаимодействия.
+- **etcd** хранит состояние системы.
+- **Scheduler и Controllers** поддерживают работоспособность.
+- **Kubelet** запускает контейнеры на нодах.
+- **Kube Proxy** обеспечивает сетевое взаимодействие.
+
+
+### QOS (Pod Quality of Service Classes)
+
+QoS-класс определяет приоритет Pod’а при вытеснении (eviction), а также влияет на поведение в случае давления по CPU/памяти.
+(QoS) в Kubernetes — это один из ключевых механизмов, который влияет на то, как kubelet управляет Pod-ами, особенно при нехватке ресурсов.
+
+В Kubernetes есть **три класса QoS**:
+
+#### 1. Guaranteed
+
+✅ **Наивысший приоритет, вытесняется в последнюю очередь.**
+
+**Условия:**
+
+• **Для всех контейнеров в Pod-е заданы requests и limits, и они равны друг другу.**
+
+```
+resources:
+  requests:
+    memory: "512Mi"
+    cpu: "500m"
+  limits:
+    memory: "512Mi"
+    cpu: "500m"
+```
+
+> Такой Pod получает гарантированный кусок ресурсов и защищён от вытеснения при OOM (Out of Memory) до последнего.
+
+#### 2. Burstable
+
+⚠️ **Средний приоритет.**
+
+**Условия:**
+
+• У **некоторых контейнеров** заданы requests, и:
+
+• либо они **не равны limits**,
+
+• либо limits не заданы вовсе.
+
+```
+resources:
+  requests:
+    memory: "256Mi"
+    cpu: "250m"
+  limits:
+    memory: "512Mi"
+    cpu: "1"
+```
+
+> Такой Pod получает доступ к гарантированным ресурсам (requests), но может использовать больше при наличии свободных ресурсов на узле.
+
+---
+
+#### 3. BestEffort
+
+❌ **Наименьший приоритет, вытесняется первым.**
+
+**Условия:**
+
+• У **ни одного контейнера нет requests и limits**.
+
+```
+resources: {}
+```
+
+> Этот Pod работает «на удачу» — использует то, что осталось на узле. Он первым попадает под OOM killer.
+
+---
+
+**Как проверить QoS класс у уже запущенного Pod?**
+
+```
+kubectl get pod <pod-name> -o jsonpath='{.status.qosClass}'
+```
+
+
+### Pod Lifecycle
+
+Жизненный цикл Pod-а. Это основа для понимания, как Pod-ы создаются, переходят между состояниями, завершаются и удаляются.
+
+#### **🚦 Жизненный цикл Pod-а**
+
+##### **📌 Основные состояния (PodPhase):**
+
+Это высокоуровневые стадии, которые можно увидеть через kubectl get pod.
+
+1. **Pending** — Pod был принят API сервером, но **ещё не запущен** (например, ждёт скачивания образов или размещения на ноде).
+2. **Running** — хотя бы один контейнер запущен, и Pod успешно размещён.
+3. **Succeeded** — все контейнеры завершились успешно (с кодом 0), и Pod не будет перезапускаться.
+4. **Failed** — хотя бы один контейнер завершился **неуспешно**, и Pod не может быть перезапущен.
+5. **Unknown** — kubelet **не может определить** статус (обычно из-за сетевых проблем).
+
+---
+##### **📌 Состояния контейнеров (ContainerState)**
+
+Каждый контейнер внутри Pod-а может быть в:
+
+• **Waiting** — ожидает запуска. Причины можно увидеть в .state.waiting.reason (например, CrashLoopBackOff, ImagePullBackOff).
+
+• **Running** — контейнер успешно запущен.
+
+• **Terminated** — контейнер завершил выполнение (по exit code или сигналу).
+
+Пример:
+
+```
+kubectl get pod mypod -o jsonpath='{.status.containerStatuses[*].state}'
+```
+
+---
+
+#### 🔁 Restart Policy
+
+Указывается в манифесте Pod-а. Возможные значения:
+
+• Always (по умолчанию, используется в Deployment)
+
+• OnFailure (для Job)
+
+• Never
+
+> Это влияет на то, будет ли kubelet перезапускать контейнер при сбое.
+
+---
+
+**🔄 Container Lifecycle Hooks**
+
+Можно задать обработчики событий:
+
+```
+lifecycle:
+  postStart:
+    exec:
+      command: ["/bin/sh", "-c", "echo Hello from postStart"]
+  preStop:
+    exec:
+      command: ["/bin/sh", "-c", "echo Goodbye from preStop"]
+```
+
+• **postStart** — вызывается **после запуска контейнера**, но до его marked as Running.
+• **preStop** — вызывается **до завершения контейнера** (например, при kubectl delete pod или Scale down).
+
+---
+
+#### ⏱ Termination Grace Period
+
+• По умолчанию: **30 секунд**.
+
+• Kubernetes отправляет SIGTERM, ждёт terminationGracePeriodSeconds, затем — SIGKILL.
+
+```
+terminationGracePeriodSeconds: 10
+```
+---
+
+**📉 Final Pod Termination Flow**
+
+1. kubelet отправляет SIGTERM контейнерам.
+2. Ждёт terminationGracePeriodSeconds.
+3. Выполняется preStop hook (если есть).
+4. По истечении времени — SIGKILL.
+5. Pod удаляется из etcd (если без finalizer).
+
+
+
+### preStop && finalizer
+
+Иногда выполняют похожие задачи (что-то “почистить перед удалением”), но они работают на совершенно разных уровнях. Давай разберёмся по-честному, без воды:
+
+---
+
+**🔁 Кратко: разница между preStop и finalizer**
+
+||**preStop hook**|**finalizer**|
+|---|---|---|
+|**Уровень**|Уровень **контейнера** внутри Pod-а|Уровень **Kubernetes-объекта** (Pod, PVC, CRD и т.п.)|
+|**Когда вызывается**|Перед остановкой контейнера (например, SIGTERM)|При удалении объекта, **но до физического удаления**|
+|**Кто исполняет**|**kubelet** на ноде|Контроллер (например, твой оператор/внешний процесс)|
+|**Для чего нужен**|Подготовить контейнер к остановке (напр., завершить соединения)|Выполнить финальную логику: удалить ресурсы, почистить связи|
+|**Можно ли “зависнуть”**|Нет — ограничен terminationGracePeriod|Да — пока не удалишь finalizer, объект не удалится|
+|**Работает при kill -9?**|❌ Нет — SIGKILL игнорирует preStop|✅ Да, потому что finalizer выше по уровню|
+
+  
+
+---
+
+#### 🔍 Примеры сценариев
+
+**preStop:**
+
+• Подключено 100 клиентов к веб-серверу. preStop может:
+
+• отправить сигнал приложению: «заверши активные соединения»;
+
+• дождаться 10 секунд;
+
+• завершиться сам.
+
+```
+lifecycle:
+  preStop:
+    exec:
+      command: ["/bin/sh", "-c", "echo 'shutting down' >> /log"]
+```
+
+> Это **выполняется в контейнере**, как скрипт или команда.
+
+---
+
+**finalizer:**
+
+• У тебя Pod, при удалении которого нужно **удалить запись из внешней БД**, **освободить IP-адрес**, **уведомить систему логирования**.
+
+• Эти действия нельзя сделать изнутри Pod-а, ты хочешь делать это **в контроллере**.
+
+```
+metadata:
+  finalizers:
+    - cleanup.mycompany.com
+```
+
+> Пока контроллер не уберёт этот finalizer — Pod не удалится.
+
+---
+
+**🎯 Ключевые различия в использовании**
+
+|**Вопрос**|**Использовать**|
+|---|---|
+|Нужно **что-то сделать внутри контейнера перед его остановкой**?|✅ preStop|
+|Нужно **удалить внешний ресурс или логически “попрощаться” с объектом на уровне кластера**?|✅ finalizer|
+
+### 🩺 Probes
+
+**Probes** — это специальные проверки, которые Kubernetes выполняет, чтобы понять:
+
+• **жив ли контейнер (livenessProbe)**
+
+• **готов ли контейнер принимать трафик (readinessProbe)**
+
+• **запустился ли контейнер корректно (startupProbe)**
+
+Они помогают kubelet принимать решения:
+
+• Перезапустить ли контейнер?
+
+• Начать ли направлять на него трафик?
+
+• Подождать ли подольше, если сервис стартует долго?
+
+---
+
+#### 🔍 1. livenessProbe
+
+> **“Контейнер завис? Надо перезапустить.”**
+
+Если livenessProbe неудачна — **kubelet перезапускает контейнер**.
+
+Пример:
+
+```
+livenessProbe:
+  httpGet:
+    path: /healthz
+    port: 8080
+  initialDelaySeconds: 5
+  periodSeconds: 10
+```
+
+---
+
+#### 🕒 2. readinessProbe
+
+> **“Готов ли контейнер принимать запросы?”**
+
+Если readinessProbe неудачна — Pod **выводится из service endpoints** (на него не будет идти трафик).
+
+Пример:
+
+```
+readinessProbe:
+  exec:
+    command: ["cat", "/tmp/ready"]
+  initialDelaySeconds: 2
+  periodSeconds: 5
+```
+
+---
+#### 🐢 3. startupProbe
+
+> **“Дай контейнеру больше времени на запуск — не убивай его раньше времени.”**
+
+Полезно для **медленно стартующих приложений**. До тех пор, пока startupProbe **не прошла**, Kubernetes **не выполняет livenessProbe**. То есть она защищает от ложных срабатываний.
+
+```
+startupProbe:
+  httpGet:
+    path: /startup
+    port: 8080
+  failureThreshold: 30
+  periodSeconds: 10
+```
+
+> В этом примере даётся ~5 минут на запуск (30 × 10 секунд).
+
+---
+
+**🔧 Типы probe’ов:**
+
+• httpGet — делает HTTP GET-запрос и проверяет код ответа (200-399 — успех).
+
+• exec — выполняет команду внутри контейнера.
+
+• tcpSocket — проверяет TCP-порт на доступность.
+
+---
+
+**🧠 Когда использовать что:**
+
+| **Задача**                       | **Использовать** |
+| -------------------------------- | ---------------- |
+| Перезапустить зависший контейнер | livenessProbe    |
+| Управлять трафиком к Pod’у       | readinessProbe   |
+| Дать приложению время на запуск  | startupProbe     |
+
+### InitContainers
+
+initContainer — это **специальный контейнер**, который выполняется **до основного контейнера** в Pod-е. Он завершает свою работу, и только после этого запускаются обычные containers.
+
+---
+
+**🔑 Ключевые особенности:**
+
+• Выполняются **последовательно**, в порядке их объявления.
+• Каждый должен **успешно завершиться (exit 0)** — иначе Pod остаётся в состоянии Init.
+• Имеют **отдельные образы и команды** от основного контейнера.
+• Могут **монтировать те же тома**, что и основной контейнер.
+
+---
+
+**🧪 Зачем использовать initContainers?**
+
+• Задержка старта, пока не готов внешний сервис (БД, Redis).
+
+• Копирование файлов в volume перед стартом приложения.
+
+• Генерация конфигураций, ключей, секретов.
+
+• Прогрев кэша или база данных миграций.
+
+---
+
+**🔧 Пример: Ожидание БД перед стартом приложения**
+
+```
+apiVersion: v1
+kind: Pod
+metadata:
+  name: app-with-init
+spec:
+  initContainers:
+  - name: wait-for-db
+    image: busybox
+    command: ['sh', '-c', 'until nc -z db 5432; do echo waiting for db; sleep 2; done']
+  containers:
+  - name: main-app
+    image: myapp:latest
+    ports:
+    - containerPort: 80
+```
+
+> Этот initContainer будет проверять доступность базы данных на порту 5432. Как только она станет доступна — приложение стартует.
+
+---
+
+**📁 Пример: копирование файлов в том**
+
+```
+spec:
+  volumes:
+  - name: config-volume
+    emptyDir: {}
+
+  initContainers:
+  - name: copy-config
+    image: busybox
+    command: ['sh', '-c', 'cp /etc/config/* /config/']
+    volumeMounts:
+    - name: config-volume
+      mountPath: /config
+    - name: config-source
+      mountPath: /etc/config
+
+  containers:
+  - name: app
+    image: myapp
+    volumeMounts:
+    - name: config-volume
+      mountPath: /app/config
+```
+
+---
+
+**🧠 Советы:**
+• Лучше использовать initContainers, чем городить логику ожидания или подготовки в основном контейнере.
+• Они хорошо сочетаются с emptyDir и другими volume-типами.
+• Можно использовать разные образы, в т.ч. alpine, busybox, curlimages/curl для утилит.
+
+
+### Service Mesh
+ 
+Это **слой инфраструктуры**, который управляет сетевыми коммуникациями между сервисами в распределённой системе.
+
+**Он отвечает за:**
+
+• 📦 **Service-to-Service communication** (обмен трафиком)
+• 🔒 **Шифрование трафика** (MTLS)
+• 🎯 **Routing & Canary** (маршрутизация, A/B, Canary)
+• 📊 **Наблюдаемость** (метрики, трассировки, логи)
+• 🔁 **Retry, timeout, circuit breaker** (механики надёжности)
+• 🚦 **Policy control** (авторизация, ACL)
+
+---
+
+#### 🔧 Как работает?
+
+Ключевая идея — **Sidecar Proxy**.
+
+Каждому Pod-у автоматически добавляется **прокси-контейнер** (обычно Envoy), через который **весь трафик между сервисами** идёт:
+
+```
+[service A] <=> [Envoy A] <===> [Envoy B] <=> [service B]
+```
+
+> Управляется централизованно через control-plane (например, Istiod в Istio).
+
+---
+
+**🎯 Зачем нужен?**
+
+|**Без Service Mesh**|**С Service Mesh**|
+|---|---|
+|Сам пишешь retry, timeout|Задаёшь в YAML, работает из коробки|
+|TLS надо встраивать в код|MTLS автоматом между сервисами|
+|Логика маршрутизации в коде|Traffic shifting через CRD|
+|Метрики в app|Авто-интеграция с Prometheus/Grafana/Jaeger|
+|Manual discovery|Встроенное сервис-обнаружение|
+
+---
+
+#### 🛠 Примеры популярных Service Mesh
+
+##### Istio (де-факто стандарт, мощный, но тяжеловат)
+
+• Control-plane: istiod
+
+• Data-plane: Envoy
+
+• CRD’ы: VirtualService, DestinationRule, Gateway, AuthorizationPolicy, и др.
+
+• Сильная поддержка MTLS, трассировки, observability.
+
+---
+
+**🧪 Пример: управление маршрутом в Istio**
+
+```
+apiVersion: networking.istio.io/v1beta1
+kind: VirtualService
+metadata:
+  name: reviews-route
+spec:
+  hosts:
+    - reviews
+  http:
+    - route:
+        - destination:
+            host: reviews
+            subset: v1
+          weight: 90
+        - destination:
+            host: reviews
+            subset: v2
+          weight: 10
+```
+
+> 90% трафика пойдёт в v1, 10% — в v2. Это пример **canary deployment** без изменения кода.
+
+---
+
+#### 🔐 MTLS — всё шифруется автоматически
+
+Трафик между Pod-ами **автоматически зашифрован**, и можно **включать политику Zero Trust** — только определённые сервисы могут общаться.
+
+```
+apiVersion: security.istio.io/v1beta1
+kind: PeerAuthentication
+metadata:
+  name: default
+spec:
+  mtls:
+    mode: STRICT
+```
+
+---
+#### 📊 Observability из коробки
+
+Сбор метрик, логов, трассировок:
+
+• 📈 Prometheus / Grafana
+
+• 🔎 Kiali (визуализация mesh-а)
+
+• 🧵 Jaeger / Zipkin (трассировки)
+
+
+### 🔧 Service
+
+Это **базовый ресурс Kubernetes**, который обеспечивает:
+
+• сервис-дискавери по имени (DNS),
+• стабильный IP,
+• маршрутизацию трафика на Pod-ы по label’ам.
+
+```
+apiVersion: v1
+kind: Service
+metadata:
+  name: reviews
+spec:
+  selector:
+    app: reviews
+  ports:
+    - port: 80
+      targetPort: 8080
+```
+
+> Все Pod-ы с app=reviews получат трафик через этот Service.
+
+---
+
+**✅ Три основных типа Service в Kubernetes**
+
+|**Тип**|**Внешний доступ**|**Где используется**|**Пример подключения**|
+|---|---|---|---|
+|ClusterIP|❌ Нет|Внутри кластера|curl my-svc.default.svc.cluster.local|
+|NodePort|✅ Да|Bare-metal, minikube|curl http://<NodeIP>:30080|
+|LoadBalancer|✅ Да (облако)|GKE, EKS, AKS, MetalLB|curl http://<EXTERNAL-IP>|
+
+---
+
+#### 📌 ClusterIP (по умолчанию)
+
+```
+apiVersion: v1
+kind: Service
+metadata:
+  name: my-svc
+spec:
+  selector:
+    app: my-app
+  ports:
+    - port: 80        # Внутри кластера
+      targetPort: 8080
+```
+
+---
+
+#### 📌 NodePort
+
+```
+apiVersion: v1
+kind: Service
+metadata:
+  name: my-nodeport-svc
+spec:
+  type: NodePort
+  selector:
+    app: my-app
+  ports:
+    - port: 80
+      targetPort: 8080
+      nodePort: 30080
+```
+
+> Доступ: http://<NodeIP\>:30080
+
+#### 📌 LoadBalancer
+
+```
+apiVersion: v1
+kind: Service
+metadata:
+  name: my-lb-svc
+spec:
+  type: LoadBalancer
+  selector:
+    app: my-app
+  ports:
+    - port: 80
+      targetPort: 8080
+```
+
+> В облаках — выдаст EXTERNAL-IP через kubectl get svc
+
+---
+
+**💡 Что важно помнить:**
+
+• ClusterIP — дефолтный, только внутри кластера.
+
+• NodePort — простой способ пробросить порт наружу.
+
+• LoadBalancer — удобно в облаке, автоматический внешний IP.
+
+• Все они указываются в манифесте Service, в spec.type.
+
+---
+
+Если хочешь — могу сгенерировать полный манифест + Deployment, чтобы всё сразу работало локально или в minikube.
+
+### 🕹 Istio VirtualService
+
+Это **ресурс уровня Istio**, который определяет:
+
+• **Как именно маршрутизировать трафик** внутри Service
+• Делать canary, A/B, header-based routing и т.д.
+• Управлять retry, timeout, fault injection и т.п.
+
+```
+apiVersion: networking.istio.io/v1beta1
+kind: VirtualService
+metadata:
+  name: reviews-routing
+spec:
+  hosts:
+    - reviews
+  http:
+    - match:
+        - headers:
+            end-user:
+              exact: test-user
+      route:
+        - destination:
+            host: reviews
+            subset: v2
+    - route:
+        - destination:
+            host: reviews
+            subset: v1
+```
+
+> Это правило: если юзер — test-user, отдать reviews:v2, иначе — v1.
+
+---
+
+**🔄 Как они работают вместе**
+
+• Service — отвечает за **“куда”**: набор Pod-ов (endpoints)
+
+• VirtualService — отвечает за **“как”**: правила маршрутизации, версии, условия
+
+**Трафик идёт так:**
+
+```
+Client → Kubernetes Service → Istio Proxy (Envoy) → VirtualService → Target Pod
+```
+
+---
+
+**📦 А что такое subset?**
+
+Чтобы VirtualService мог выбрать v1, v2, ты должен создать DestinationRule:
+
+```
+apiVersion: networking.istio.io/v1beta1
+kind: DestinationRule
+metadata:
+  name: reviews-dest
+spec:
+  host: reviews
+  subsets:
+    - name: v1
+      labels:
+        version: v1
+    - name: v2
+      labels:
+        version: v2
+```
+
+> Теперь Istio сможет направлять трафик только на те Pod-ы, у которых version: v1 или v2.
+
+---
+
+
+
+### Ingress
+
+Kubernetes ресурс, который описывает **правила входа HTTP/HTTPS-трафика** в кластер и маршрутизацию к сервисам.
+
+**Пример:**
+
+```
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: my-ingress
+spec:
+  rules:
+    - host: mysite.local
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: my-service
+                port:
+                  number: 80
+```
+
+📌 Но сам Ingress ничего не делает без контроллера!
+
+#### 🎮 Ingress Controller — что это?
+
+> **Приложение (под/деплоймент)**, которое **читает ресурсы Ingress** и **настраивает прокси-сервер** (например, NGINX) для обработки внешнего трафика.
+
+**Популярные контроллеры:**
+
+• nginx-ingress ✅ (де-факто стандарт)
+
+• traefik
+
+• HAProxy
+
+• Istio Gateway (в рамках Istio)
+
+• AWS ALB Controller (в AWS)
+
+---
+**🔁 Как это работает:**
+
+```
+[Браузер] 
+  ↓ HTTP/HTTPS
+[Ingress Controller Pod (например, NGINX)]
+  ↓
+[Ingress rules → Service → Pod]
+```
+
+---
+
+#### 📌 Что делает Ingress:
+
+• Правила маршрутизации (host + path)
+
+• Поддержка HTTPS (через TLS-секреты)
+
+• Может использовать аннотации для настроек (timeouts, redirects и т.д.)
+
+#### 📌 Что делает Ingress Controller:
+
+• Слушает порт (80/443)
+
+• Считывает Ingress-объекты
+
+• Настраивает внутренний прокси (например, nginx.conf)
+
+• Обрабатывает входящие соединения
+
+---
+#### 🧠 Кратко:
+
+| **Компонент**      | **Роль**                              |
+| ------------------ | ------------------------------------- |
+| Ingress            | Правила маршрутизации                 |
+| Ingress Controller | Прокси, который эти правила реализует |
+
+### ReplicaSet (низкоуровневый)
+
+> Поддерживает **заданное количество Pod-ов**. Сам по себе редко используется напрямую.
+
+```
+apiVersion: apps/v1
+kind: ReplicaSet
+spec:
+  replicas: 3
+```
+
+• Обеспечивает: _N реплик_
+
+• Не поддерживает обновления, стратегии, rollback
+
+• Используется **внутри Deployment**
+
+  
+
+📌 Не используй напрямую — почти всегда используешь Deployment.
+
+---
+### Deployment (стандарт для stateless приложений)
+
+> Самый популярный контроллер. Обеспечивает **масштабируемость**, **обновления**, **откат**.
+
+```
+apiVersion: apps/v1
+kind: Deployment
+spec:
+  replicas: 3
+  strategy:
+    type: RollingUpdate
+```
+
+• Позволяет **обновлять версии без даунтайма**
+
+• Есть стратегии обновления (RollingUpdate, Recreate)
+
+• Поддерживает rollback, pause, resume
+
+  
+
+📌 Используется для web-приложений, API, сервисов.
+
+---
+
+### DaemonSet
+
+> Запускает **по одному Pod-у на каждой Node**.
+
+```
+apiVersion: apps/v1
+kind: DaemonSet
+```
+
+• Полезен для: логгера, мониторинга, агента (Prometheus, Fluentd)
+
+• Новые ноды автоматически получают Pod
+
+• Без replicas — он сам знает, сколько нод
+
+  
+
+📌 Используется для инфраструктурных компонентов.
+
+---
+
+### StatefulSet
+
+> Используется для **stateful-приложений** (БД, кэш, очереди), где **важен порядок и имена Pod-ов**.
+
+```
+apiVersion: apps/v1
+kind: StatefulSet
+spec:
+  serviceName: my-headless
+```
+
+• Поддерживает стабильные имена Pod-ов: mongo-0, mongo-1
+
+• Использует **PersistentVolumeClaim templates**
+
+• Запускает/удаляет Pod’ы поочерёдно
+
+  
+
+📌 Используется для: PostgreSQL, Cassandra, Kafka, Redis Cluster
+
+---
+### Job
+
+> Выполняет **одиночную задачу**, дожидается завершения.
+
+```
+apiVersion: batch/v1
+kind: Job
+spec:
+  completions: 1
+```
+
+• Создаёт Pod для выполнения задачи
+
+• Повторяет, если задача неуспешна
+
+• Сам удаляется по завершении (или можно сохранить логи)
+
+📌 Используется для: миграций, импортов, аналитических задач
+
+---
+### CronJob
+
+> Периодически запускает Job по расписанию (cron-выражение)
+
+```
+apiVersion: batch/v1
+kind: CronJob
+spec:
+  schedule: "*/5 * * * *"
+```
+
+📌 Используется для: бэкапов, проверок, периодических отчётов
+
+---
+
+### Pod controllers comparation
+
+| **Контроллер** | **Масштабируемость** | **Хранит стейт** | **Периодичность** | **Одна задача** | **Пример использования**  |
+| -------------- | -------------------- | ---------------- | ----------------- | --------------- | ------------------------- |
+| Deployment     | ✅ Да                 | ❌ Нет            | ❌ Нет             | ❌ Нет           | web-app, API, worker      |
+| ReplicaSet     | ✅ Да                 | ❌ Нет            | ❌ Нет             | ❌ Нет           | (внутри Deployment)       |
+| DaemonSet      | ❌ 1 на Node          | ❌ Нет            | ❌ Нет             | ❌ Нет           | node exporter, log-агенты |
+| StatefulSet    | ✅ Да                 | ✅ Да             | ❌ Нет             | ❌ Нет           | PostgreSQL, Redis cluster |
+| Job            | ❌ (один запуск)      | ❌ Нет            | ❌ Нет             | ✅ Да            | миграция, ETL, init-task  |
+| CronJob        | ❌                    | ❌ Нет            | ✅ Да              | ✅ Да            | бэкап каждые N минут      |
+
+
+
+### PVC
+
+**PVC (PersistentVolumeClaim)** — это **заявка от Pod-а на хранилище**. Это как “бронирование диска”: ты говоришь, какой объём и доступ тебе нужен — а Kubernetes сам выделяет подходящее хранилище (PersistentVolume) или создаёт его (в случае dynamic provisioning).
+
+---
+
+**🧱 Компоненты хранения в Kubernetes**
+
+1. **PersistentVolume (PV)** — физический или логический диск (долговечный том).
+
+2. **PersistentVolumeClaim (PVC)** — запрос от Pod-а: “дай мне диск на 1Gi, с RW доступом”.
+
+3. **StorageClass** — шаблон, описывающий, **как именно создавать PV** (например, тип диска в облаке: SSD, HDD, reclaim policy и т.п.).
+
+---
+
+**🔄 Жизненный цикл: как всё связано**
+
+```
+Pod → PersistentVolumeClaim (PVC) → PersistentVolume (PV) → Physical disk (GCE, EBS, NFS, Ceph, etc)
+```
+---
+
+**🔧 Пример 1: Простой PVC + Pod**  
+
+**📄 PVC:**
+
+```
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: my-pvc
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+```
+
+**📄 Под, использующий этот PVC:**
+
+```
+apiVersion: v1
+kind: Pod
+metadata:
+  name: my-pod
+spec:
+  containers:
+    - name: app
+      image: nginx
+      volumeMounts:
+        - name: my-storage
+          mountPath: /usr/share/nginx/html
+  volumes:
+    - name: my-storage
+      persistentVolumeClaim:
+        claimName: my-pvc
+```
+
+> 📦 Контейнер получает **путь /usr/share/nginx/html**, примонтированный из PVC.
+
+---
+
+**📚 Ключевые параметры PVC**
+
+|**Параметр**|**Значение**|
+|---|---|
+|storage|Сколько нужно (например, 1Gi)|
+|accessModes|ReadWriteOnce, ReadOnlyMany, ReadWriteMany|
+|volumeMode|Filesystem (по умолчанию) или Block|
+|storageClassName|Какой StorageClass использовать|
+
+---
+
+**🔁 Static vs Dynamic provisioning**
+
+|**Тип**|**Что происходит**|
+|---|---|
+|**Static**|Админ заранее создаёт PV, ты делаешь PVC и ждёшь совпадения по параметрам|
+|**Dynamic** ✅|PVC автоматически вызывает StorageClass, который создаёт PV на лету (например, EBS в AWS, Persistent Disk в GCP)|
+
+---
+
+**📄 Пример: PVC с StorageClass**
+
+```
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: fast-storage
+spec:
+  storageClassName: "fast-ssd"
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 5Gi
+```
+
+---
+
+**🧠 Как посмотреть:**
+
+```
+kubectl get pvc
+kubectl describe pvc my-pvc
+kubectl get pv
+```
+
+> Статус PVC должен быть Bound, если всё ок.
+
+---
+
+**🗑 Reclaim Policy (что делать после удаления PVC)**
+
+• Delete — PV будет удалён вместе с PVC (часто в динамическом сценарии)
+
+• Retain — диск останется, нужно очищать вручную
+
+• Recycle (устаревший)
+
+---
+
+**📦 Где используются PVC?**
+
+• Базы данных (PostgreSQL, MongoDB)
+
+• CMS (WordPress)
+
+• Кэш (Redis с persistence)
+
+• Хостинг статики в Nginx
+
+• Kafka, MinIO, Ceph, и т.д.
+
+---
+
+
+### GitOps vs Helm
+
+**🎯 Суть обоих подходов:**
+
+| **Подход**   | **Что делает**                                                                   |
+| ------------ | -------------------------------------------------------------------------------- |
+| **Helm CLI** | Ты **вручную применяешь Helm чарты** с локальной машины или CI/CD                |
+| **GitOps**   | Ты **хранишь всё в Git**, а оператор в кластере **сам синхронизирует состояние** |
+
+---
+
+**⚙️ Как работает каждый подход**
+
+
+**📦 1. Helm deployment (классический)**
+
+• Ты запускаешь команду:
+
+```
+helm upgrade --install my-app ./chart --values values.yaml
+```
+
+• Или через CI (например, GitLab CI).
+
+• Helm устанавливает/обновляет всё напрямую в кластер.
+
+• **Состояние — в Helm и в кластере**, не обязательно в Git.
+
+🔻 Проблемы:
+
+• Нет 100% гарантий, что Git = кластер.
+
+• Нужно самому следить за порядком обновлений.
+
+• Можно “вмешаться вручную” и не зафиксировать в Git.
+
+---
+
+**🔁 2. GitOps (ArgoCD, FluxCD)**
+
+• Ты **кладёшь манифесты или Helm values в Git**.
+
+• Git = источник правды.
+
+• В кластере работает **оператор (ArgoCD/Flux)**, который:
+
+• Смотрит в Git
+
+• Применяет манифесты/Helm чарты в кластер
+
+• Следит, чтобы кластер всегда соответствовал Git
+
+> Git → автосинхронизация → кластер
+
+---
+
+**📊 Сравнение по ключевым аспектам:**
+
+|**Категория**|**GitOps**|**Helm (ручной)**|
+|---|---|---|
+|🧠 Источник правды|Git|Helm state / CI конфигурация / память|
+|🔁 Автоматичность|Да (pull model)|Нет (push model)|
+|🔒 Безопасность доступа|Не нужен доступ к кластеру — только Git|Требуется доступ к кластеру|
+|🛠 Откат изменений|Git revert → автооткат|Надо вручную запускать helm rollback|
+|👀 Observability|UI (ArgoCD/Flux) с дифами и статусами|helm status, logs|
+|✍️ Изменения вне Git|**Автоматически возвращаются к Git-состоянию**|Сохраняются (drift!)|
+|🔁 Частота обновлений|Постоянная синхронизация|Только по запуску команды|
+
+---
+
+**🤖 ArgoCD + Helm = ❤️**
+
+Ты можешь **использовать Helm внутри GitOps**, просто зафиксировав чарты и values в Git:
+
+```
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: my-app
+spec:
+  source:
+    repoURL: https://github.com/my-org/my-repo
+    targetRevision: main
+    path: charts/my-app
+    helm:
+      valueFiles:
+        - values-prod.yaml
+```
+
+> Таким образом, ты **не теряешь гибкость Helm**, но получаешь **автоматизацию GitOps**.
+
+---
+
+**💡 Когда использовать что?**
+
+|**Сценарий**|**Подход**|
+|---|---|
+|Маленький pet-проект|Helm CLI|
+|Команда/прод/много окружений|GitOps|
+|Требуется аудит, откат, видимость|GitOps|
+|Развёртывание из CI (ручной контроль)|Helm CLI|
+|Много компонентов, инфраструктура как код|GitOps|

@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "docs/utilities/Text files.md",
+                "file": "docs/topics/ACID and BASE.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "Text files"
+              "title": "ACID and BASE"
             }
           }
         ]
@@ -94,7 +94,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "docs/utilities/Text files.md",
+                "file": "docs/interview/Interview.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -104,7 +104,7 @@
                 "unlinkedCollapsed": true
               },
               "icon": "links-coming-in",
-              "title": "Backlinks for Text files"
+              "title": "Backlinks for Interview"
             }
           },
           {
@@ -113,12 +113,12 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "docs/utilities/Text files.md",
+                "file": "docs/interview/Interview.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               },
               "icon": "links-going-out",
-              "title": "Outgoing links from Text files"
+              "title": "Outgoing links from Interview"
             }
           },
           {
@@ -142,13 +142,13 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "docs/utilities/Text files.md",
+                "file": "docs/topics/ACID and BASE.md",
                 "followCursor": false,
                 "showSearch": false,
                 "searchQuery": ""
               },
               "icon": "lucide-list",
-              "title": "Outline of Text files"
+              "title": "Outline of ACID and BASE"
             }
           }
         ],
@@ -170,33 +170,33 @@
   },
   "active": "7f3bcfc957159866",
   "lastOpenFiles": [
+    "docs/programming/Common.md",
+    "docs/interview/Interview.md",
+    "docs/topics/Kube cluster architecture.md",
+    "docs/topics/Configuring a Kubernetes Cluster.md",
+    "docs/devops/Kubernetes/Autoscailing.md",
+    "docs/topics/Redis vs RabbitMQ vs Kafka.md",
+    "docs/topics/OIDC vs OAuth.md",
+    "docs/utilities/rediscli.md",
+    "docs/topics/CAP and PACELC.md",
+    "docs/topics/Deploying VictoriaMetrics in Cluster Mode (by Components).md",
+    "docs/topics/Docker layots.md",
+    "docs/topics/du how it work?.md",
+    "docs/topics/envoy.md",
+    "docs/topics/Git merge kinds.md",
+    "docs/topics/HTTPv3.md",
+    "docs/topics/Thanos vs VictoriaMetrics.md",
+    "docs/topics/Symmetrical and assimetrical decrypt.md",
+    "docs/devops/clouds/Basic questions.md",
+    "docs/utilities/Text files.md",
     "docs/index.md",
     "docs/devops/Terraform/Workspace.md",
     "docs/devops/Terraform/Terraform state.md",
     "docs/interview/Troubleshooting Guide.md",
     "docs/interview/questions/Terraform.md",
     "docs/devops/Ansible.md",
-    "docs/interview/Interview.md",
     "docs/interview/questions/gitlab.md",
-    "docs/interview/questions/linux.md",
-    "docs/interview/questions/network.md",
-    "docs/interview/questions/kubernetes.md",
-    "docs/utilities/processes/ps.md",
-    "docs/utilities/processes/lsof.md",
-    "docs/topics/Kube cluster architecture.md",
-    "docs/devops/clouds/Basic questions.md",
     "docs/devops/clouds",
-    "docs/devops/Gitlab/Artifacts.md",
-    "docs/devops/Clouds/Basic questions.md",
-    "docs/interview/questions/clouds.md",
-    "docs/devops/Kubernetes/Security.md",
-    "docs/devops/Kubernetes/Autoscailing.md",
-    "docs/devops/Gitlab/Security In CI-CD.md",
-    "docs/devops/Gitlab/Runners.md",
-    "README.md",
-    "docs/utilities/Disk.md",
-    "docs/utilities/Git.md",
-    "docs/utilities/crontab.md",
     "docs/utilities/virtualization/forvardports657889.png",
     "docs/interview",
     "docs/interview/questions",
