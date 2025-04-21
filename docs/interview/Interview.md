@@ -858,23 +858,36 @@ CIDR-блок `/22`:
 ### DNS
 
 **Структура записи DNS (RR):**
+
 - NAME — домен
+
 - TYPE — тип записи (A, AAAA, MX, CNAME...)
+
 - CLASS — тип сети (обычно IN)
+
 - TTL — срок жизни в кэше
+
 - RDLEN — длина данных
+
 - RDATA — содержимое
 
 **Типы записей:**
-- A — IPv4 адрес
-- AAAA — IPv6 адрес
-- CNAME — псевдоним (каноническое имя)
-- MX — почтовый обменник
-- NS — DNS сервер зоны
-- PTR — обратная запись IP → имя
-- SOA — начальная запись зоны
-- SRV — серверы сервисов (например, для Jabber, Active Directory)
 
+- A — IPv4 адрес  
+
+- AAAA — IPv6 адрес
+
+- CNAME — псевдоним (каноническое имя)
+
+- MX — почтовый обменник
+
+- NS — DNS сервер зоны
+
+- PTR — обратная запись IP → имя
+
+- SOA — начальная запись зоны
+
+- SRV — серверы сервисов (например, для Jabber, Active Directory)
 
 #### Рекурсивный и не рекурсивный запрос
 
@@ -2021,8 +2034,8 @@ spec:
 | **Тип**          | **Внешний доступ** | **Где используется**           | **Пример подключения**                          |
 | ---------------- | ------------------ | ------------------------------ | ----------------------------------------------- |
 | **ClusterIP**    | ❌ Нет              | Внутри кластера                | curl my-svc.default.svc.cluster.local           |
-| **NodePort**     | ✅ Да               | Bare-metal, Minikube           | curl http://<NodeIP>:30080                      |
-| **LoadBalancer** | ✅ Да (облако)      | GKE, EKS, AKS, MetalLB         | curl http://\<EXTERNAL-IP>                      |
+| **NodePort**     | ✅ Да               | Bare-metal, Minikube           | curl http://<\NodeIP>:30080                     |
+| **LoadBalancer** | ✅ Да (облако)      | GKE, EKS, AKS, MetalLB         | curl http://\<\EXTERNAL-IP>                     |
 | **ExternalName** | ⚠️ Через DNS       | Доступ к внешним сервисам      | curl http://external-service.local (CNAME)      |
 | **Headless**     | ❌ Нет (IP нет)     | StatefulSet, Service Discovery | dig my-svc.default.svc.cluster.local → IP подов |
 
