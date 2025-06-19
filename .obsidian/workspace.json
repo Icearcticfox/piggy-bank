@@ -13,12 +13,24 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "docs/interview/Interview.md",
+                "file": "docs/programming/Common.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "Interview"
+              "title": "Common"
+            }
+          },
+          {
+            "id": "5c600ce057195618",
+            "type": "leaf",
+            "state": {
+              "type": "release-notes",
+              "state": {
+                "currentVersion": "1.8.10"
+              },
+              "icon": "lucide-book-up",
+              "title": "Release Notes 1.8.10"
             }
           }
         ]
@@ -142,13 +154,13 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "docs/interview/Interview.md",
+                "file": "docs/programming/Common.md",
                 "followCursor": false,
                 "showSearch": true,
                 "searchQuery": ""
               },
               "icon": "lucide-list",
-              "title": "Outline of Interview"
+              "title": "Outline of Common"
             }
           }
         ],
@@ -156,7 +168,8 @@
       }
     ],
     "direction": "horizontal",
-    "width": 300
+    "width": 491.5,
+    "collapsed": true
   },
   "left-ribbon": {
     "hiddenItems": {
@@ -170,32 +183,32 @@
   },
   "active": "7f3bcfc957159866",
   "lastOpenFiles": [
-    "docs/interview/Вопросы к SRE-собеседованию.md",
-    "docs/interview/Interview.md",
-    "docs/interview/questions/clouds.md",
-    "docs/topics/Symmetrical and assimetrical decrypt.md",
-    "docs/devops/Terraform/Terraform state.md",
-    "docs/devops/Terraform/Workspace.md",
-    "docs/devops/Ansible.md",
-    "docs/devops/Kubernetes/Autoscailing.md",
     "docs/devops/Kubernetes/Security.md",
+    "docs/interview/questions/clouds.md",
+    "docs/interview/Interview.md",
+    "docs/interview/Troubleshooting Guide.md",
+    "docs/devops/Ansible.md",
+    "docs/devops/Terraform/Workspace.md",
+    "docs/devops/Terraform/Terraform state.md",
+    "docs/devops/Kubernetes/Autoscailing.md",
+    "docs/devops/Gitlab/Artifacts.md",
     "docs/devops/Gitlab/Runners.md",
-    "docs/devops/clouds/Basic questions.md",
-    "docs/topics/ACID and BASE.md",
+    "docs/devops/Gitlab/Security In CI-CD.md",
+    "docs/index.md",
     "docs/programming/Common.md",
+    "docs/interview/questions/kubernetes.md",
+    "docs/interview/questions/network.md",
+    "docs/interview/questions/Terraform.md",
+    "docs/interview/Вопросы к SRE-собеседованию.md",
+    "docs/interview/questions/linux.md",
+    "docs/interview/questions/gitlab.md",
+    "docs/devops/clouds/Basic questions.md",
+    "docs/topics/Symmetrical and assimetrical decrypt.md",
+    "docs/topics/ACID and BASE.md",
     "docs/topics/Kube cluster architecture.md",
     "docs/topics/Configuring a Kubernetes Cluster.md",
     "docs/topics/Redis vs RabbitMQ vs Kafka.md",
     "docs/topics/OIDC vs OAuth.md",
-    "docs/utilities/rediscli.md",
-    "docs/topics/CAP and PACELC.md",
-    "docs/topics/Deploying VictoriaMetrics in Cluster Mode (by Components).md",
-    "docs/topics/Docker layots.md",
-    "docs/topics/du how it work?.md",
-    "docs/topics/envoy.md",
-    "docs/topics/Git merge kinds.md",
-    "docs/topics/HTTPv3.md",
-    "docs/topics/Thanos vs VictoriaMetrics.md",
     "docs/devops/clouds",
     "docs/utilities/virtualization/forvardports657889.png",
     "docs/interview",
