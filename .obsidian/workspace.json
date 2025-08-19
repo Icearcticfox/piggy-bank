@@ -1,0 +1,210 @@
+{
+  "main": {
+    "id": "56a7e842e1f309c2",
+    "type": "split",
+    "children": [
+      {
+        "id": "828ec017c5bf26ed",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "7d06eadf249734ee",
+            "type": "leaf",
+            "state": {
+              "type": "empty",
+              "state": {},
+              "icon": "lucide-file",
+              "title": "New tab"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "vertical"
+  },
+  "left": {
+    "id": "e1daab8e195cc25e",
+    "type": "split",
+    "children": [
+      {
+        "id": "3c482e5ca6aa6fce",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "accb7b324e0ba63b",
+            "type": "leaf",
+            "state": {
+              "type": "file-explorer",
+              "state": {
+                "sortOrder": "alphabetical",
+                "autoReveal": false
+              },
+              "icon": "lucide-folder-closed",
+              "title": "Files"
+            }
+          },
+          {
+            "id": "c6c9002a8b4792c7",
+            "type": "leaf",
+            "state": {
+              "type": "search",
+              "state": {
+                "query": "",
+                "matchingCase": false,
+                "explainSearch": false,
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical"
+              },
+              "icon": "lucide-search",
+              "title": "Search"
+            }
+          },
+          {
+            "id": "ca32d70f34e6c42b",
+            "type": "leaf",
+            "state": {
+              "type": "bookmarks",
+              "state": {},
+              "icon": "lucide-bookmark",
+              "title": "Bookmarks"
+            }
+          }
+        ],
+        "currentTab": 1
+      }
+    ],
+    "direction": "horizontal",
+    "width": 200
+  },
+  "right": {
+    "id": "981611a4ead6638c",
+    "type": "split",
+    "children": [
+      {
+        "id": "46d26b38f61137e3",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "51c1ac745d8d45fc",
+            "type": "leaf",
+            "state": {
+              "type": "backlink",
+              "state": {
+                "file": "docs/interview/Interview.md",
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical",
+                "showSearch": false,
+                "searchQuery": "",
+                "backlinkCollapsed": true,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-coming-in",
+              "title": "Backlinks for Interview"
+            }
+          },
+          {
+            "id": "2444901b1009774d",
+            "type": "leaf",
+            "state": {
+              "type": "outgoing-link",
+              "state": {
+                "file": "docs/interview/Interview.md",
+                "linksCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-going-out",
+              "title": "Outgoing links from Interview"
+            }
+          },
+          {
+            "id": "470bbc532cef6cca",
+            "type": "leaf",
+            "state": {
+              "type": "tag",
+              "state": {
+                "sortOrder": "frequency",
+                "useHierarchy": true,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-tags",
+              "title": "Tags"
+            }
+          },
+          {
+            "id": "b339270398399444",
+            "type": "leaf",
+            "state": {
+              "type": "outline",
+              "state": {
+                "followCursor": false,
+                "showSearch": true,
+                "searchQuery": ""
+              },
+              "icon": "lucide-list",
+              "title": "Outline"
+            }
+          }
+        ],
+        "currentTab": 3
+      }
+    ],
+    "direction": "horizontal",
+    "width": 315.5
+  },
+  "left-ribbon": {
+    "hiddenItems": {
+      "switcher:Open quick switcher": false,
+      "graph:Open graph view": false,
+      "canvas:Create new canvas": false,
+      "daily-notes:Open today's daily note": false,
+      "templates:Insert template": false,
+      "command-palette:Open command palette": false
+    }
+  },
+  "active": "7d06eadf249734ee",
+  "lastOpenFiles": [
+    "docs/topics/envoy.md",
+    "docs/topics/du how it work?.md",
+    "docs/topics/Thanos vs VictoriaMetrics.md",
+    "docs/topics/Symmetrical and assimetrical decrypt.md",
+    "docs/topics/Sticky bit.md",
+    "docs/topics/Redis vs RabbitMQ vs Kafka.md",
+    "docs/topics/OIDC vs OAuth.md",
+    "docs/topics/Linux Namespaces and Cgroups.md",
+    "docs/topics/Kube cluster architecture.md",
+    "docs/topics/Inode and Descriptors.md",
+    "docs/topics/ICMP.md",
+    "docs/topics/Hard Links vs Symbolic Links.md",
+    "docs/topics/HTTPv3.md",
+    "docs/topics/Git merge kinds.md",
+    "docs/topics/Docker layots.md",
+    "docs/topics/Deploying VictoriaMetrics in Cluster Mode (by Components).md",
+    "docs/topics/Configuring a Kubernetes Cluster.md",
+    "docs/topics/CAP and PACELC.md",
+    "docs/topics/Ansible vs Terraform.md",
+    "docs/topics/ACID and BASE.md",
+    "docs/topics",
+    "docs/programming/Common.md",
+    "docs/programming",
+    "docs/interview/questions/network.md",
+    "docs/interview/questions/linux.md",
+    "docs/interview/questions/kubernetes.md",
+    "docs/interview/questions/gitlab.md",
+    "docs/interview/questions/Terraform.md",
+    "docs/interview/questions",
+    "docs/interview",
+    "docs/utilities/Virtualization/forvardports657889.png",
+    "docs/utilities/services",
+    "docs/utilities/processes",
+    "docs/utilities/k8s",
+    "docs/utilities/consul",
+    "docs/utilities/Virtualization",
+    "docs/utilities",
+    "piggy-bank-master/docs/utilities/Virtualization/forvardports657889.png",
+    "Untitled.canvas",
+    "docs/utilities/virtualization/forvardports657889.png"
+  ]
+}
